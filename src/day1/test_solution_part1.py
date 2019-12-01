@@ -23,9 +23,7 @@ def test_sum_fuel():
 
 
 def test_solution_part1():
-    input_file = open('src/day1/input.txt', 'r')
-    input_raw = input_file.read()
-    input_file.close()
+    input_raw = day1.solution_part1.read('src/day1/input.txt')
     masses = day1.solution_part1.parse_input(input_raw)
     solution = day1.solution_part1.sum_fuel(masses)
     assert solution == 3342946
