@@ -1,4 +1,5 @@
 ![](https://github.com/Markus-Ende/adventofcode2019/workflows/Python%20application/badge.svg)
+[![codecov](https://codecov.io/gh/Markus-Ende/adventofcode2019/branch/master/graph/badge.svg)](https://codecov.io/gh/Markus-Ende/adventofcode2019)
 
 # Advent of code 2019
 
