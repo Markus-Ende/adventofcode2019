@@ -7,7 +7,7 @@ def manhattan_distance(x, y):
 
 
 def convert_path_to_coords(path):
-    coords = set()
+    coords = []
     current_x = 0
     current_y = 0
     for segment in path:
@@ -22,7 +22,7 @@ def convert_path_to_coords(path):
                 current_y = current_y + 1
             if (direction == "D"):
                 current_y = current_y - 1
-            coords.add((current_x, current_y))
+            coords.append((current_x, current_y))
     return coords
 
 
@@ -40,5 +40,5 @@ def min_manhattan_distance(coords):
 def find_dist_of_intersection_closest_to_origin(path1, path2):
     coords1 = convert_path_to_coords(path1)
     coords2 = convert_path_to_coords(path2)
-    intersections = coords1.intersection(coords2)
+    intersections = set(coords1).intersection(set(coords2))
     return min_manhattan_distance(intersections)
