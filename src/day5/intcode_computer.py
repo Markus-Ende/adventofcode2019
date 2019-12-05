@@ -45,6 +45,51 @@ def execute_output(i, tokenized_program):
     return i+2
 
 
+def execute_jump_if_true(i, tokenized_program):
+    parameter_modes = parse_parameter_modes(tokenized_program[i])
+
+    condition = read_value(i+1, tokenized_program, parameter_modes[0])
+
+    if (condition == 0):
+        return i+3
+    else:
+        return read_value(i+2, tokenized_program, parameter_modes[1])
+
+
+def execute_jump_if_false(i, tokenized_program):
+    parameter_modes = parse_parameter_modes(tokenized_program[i])
+
+    condition = read_value(i+1, tokenized_program, parameter_modes[0])
+
+    if (condition != 0):
+        return i+3
+    else:
+        return read_value(i+2, tokenized_program, parameter_modes[1])
+
+
+def execute_less_than(i, tokenized_program):
+    parameter_modes = parse_parameter_modes(tokenized_program[i])
+
+    operand1 = read_value(i+1, tokenized_program, parameter_modes[0])
+    operand2 = read_value(i+2, tokenized_program, parameter_modes[1])
+
+    tokenized_program[tokenized_program[i+3]] = 1 if operand1 < operand2 else 0
+
+    return i+4
+
+
+def execute_equals(i, tokenized_program):
+    parameter_modes = parse_parameter_modes(tokenized_program[i])
+
+    operand1 = read_value(i+1, tokenized_program, parameter_modes[0])
+    operand2 = read_value(i+2, tokenized_program, parameter_modes[1])
+
+    tokenized_program[tokenized_program[i+3]
+                      ] = 1 if operand1 == operand2 else 0
+
+    return i+4
+
+
 def execute_halt(i, tokenized_program):
     return -1
 
@@ -54,6 +99,10 @@ commands = {
     2: execute_multiply,
     3: execute_input,
     4: execute_output,
+    5: execute_jump_if_true,
+    6: execute_jump_if_false,
+    7: execute_less_than,
+    8: execute_equals,
     99: execute_halt
 }
 
