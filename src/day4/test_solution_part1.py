@@ -1,5 +1,5 @@
 import pytest
-import day4.solution_part1
+from day4.solution_part1 import *
 
 
 @pytest.mark.parametrize("password,expected", [
@@ -9,7 +9,7 @@ import day4.solution_part1
     ([1, 2, 3, 7, 8, 9], False)
 ])
 def test_check_valid_password(password, expected):
-    assert day4.solution_part1.check_valid_password(password) == expected
+    assert check_valid_password(password) == expected
 
 
 @pytest.mark.parametrize("min,max,expected", [
@@ -17,4 +17,4 @@ def test_check_valid_password(password, expected):
     ("153517", "630395", 1729)
 ])
 def test_count_valid_passwords(min, max, expected):
-    assert day4.solution_part1.count_valid_passwords(min, max) == expected
+    assert count_valid_passwords(min, max, check_valid_password) == expected
