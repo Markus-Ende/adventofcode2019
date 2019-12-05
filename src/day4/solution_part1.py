@@ -15,13 +15,13 @@ def check_valid_password(password):
     return True
 
 
-def count_valid_passwords(min, max):
+def count_valid_passwords(min, max, validation_function):
     min_int = int(min)
     max_int = int(max)
 
     count = 0
     for password in range(min_int, max_int + 1):
         password_digits = list(map(int, str(password)))
-        if (check_valid_password(password_digits)):
+        if (validation_function(password_digits)):
             count = count + 1
     return count
