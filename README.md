@@ -5,3 +5,21 @@
 
 Python solutions for
 https://adventofcode.com/2019
+
+## Run Tests
+
+```bash
+pytest
+```
+
+## Run Tests on save
+
+```bash
+ptw
+```
+
+## Show test coverage
+
+```bash
+pytest --cov
+```
