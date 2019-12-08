@@ -11,3 +11,15 @@ def parse_layers(input, width, height):
         stop += size
 
     return layers
+
+
+def decode(layers):
+    size = len(layers[0])
+    pixels = []
+    for i in range(0, size):
+        for l in layers:
+            if (l[i] != 2):
+                pixels.append(l[i])
+                break
+
+    return "".join([str(p) for p in pixels])
