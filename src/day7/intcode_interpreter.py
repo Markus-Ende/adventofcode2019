@@ -1,4 +1,4 @@
-def run(intcode, input_sequence=None, output_callback=None):
+def run(intcode, initial_instruction_pointer=0, single_step=False, input_sequence=None, output_callback=None):
     input_generator = None if input_sequence == None else iter(input_sequence)
 
     def out(x):
@@ -114,8 +114,12 @@ def run(intcode, input_sequence=None, output_callback=None):
         return list(map(lambda x: int(x), program.split(",")))
 
     tokenized_program = tokenize_program(intcode)
-    instruction_pointer = 0
-    while (instruction_pointer >= 0):
+    instruction_pointer = initial_instruction_pointer
+    if (single_step):
         instruction_pointer = run_command(
             instruction_pointer, tokenized_program)
-    return tokenized_program
+    else:
+        while (instruction_pointer >= 0):
+            instruction_pointer = run_command(
+                instruction_pointer, tokenized_program)
+    return (instruction_pointer, tokenized_program)
