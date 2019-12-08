@@ -122,4 +122,4 @@ def run(intcode, initial_instruction_pointer=0, single_step=False, input_sequenc
         while (instruction_pointer >= 0):
             instruction_pointer = run_command(
                 instruction_pointer, tokenized_program)
-    return (instruction_pointer, tokenized_program)
+    return (instruction_pointer, ", ".join(str(x) for x in tokenized_program))
