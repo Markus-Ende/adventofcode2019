@@ -1,18 +1,25 @@
 
-from day5.intcode_computer import run_intcode, tokenize_program
-# import io
-# import sys
-# from contextlib import redirect_stdout
+from day7.intcode_interpreter import run
+from itertools import permutations
 
 
-def thruster_output(intcode, setting_sequence):
+def thruster_output(intcode, phase_setting_sequence):
+    input_signal = 0
 
-    # sys.stdin = io.StringIO("4\n0\n")
+    for phase_setting in phase_setting_sequence:
+        def store_output(x):
+            nonlocal input_signal
+            input_signal = x
+        run(intcode, (phase_setting, input_signal), store_output)
 
-    # f = io.StringIO()
-    # with redirect_stdout(f):
-    #     run_intcode(tokenize_program(intcode))
-    #     echo()
-    # out = f.getvalue()
-    # print("OUT", out)
-    return 0
+    return input_signal
+
+
+def max_thruster_output(intcode):
+    max_thruster_output = 0
+
+    for phase_setting_sequence in permutations((0, 1, 2, 3, 4)):
+        max_thruster_output = max(
+            max_thruster_output, thruster_output(intcode, phase_setting_sequence))
+
+    return max_thruster_output
