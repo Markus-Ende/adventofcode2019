@@ -10,7 +10,7 @@ def thruster_output(intcode, phase_setting_sequence):
         def store_output(x):
             nonlocal input_signal
             input_signal = x
-        run(intcode, (phase_setting, input_signal), store_output)
+        run(intcode, 0, False, (phase_setting, input_signal), store_output)
 
     return input_signal
 
