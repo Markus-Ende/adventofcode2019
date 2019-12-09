@@ -10,3 +10,12 @@ def test_solution_part1():
     assert len(output) == 1
     solution = output[0]
     assert solution == 3409270027
+
+
+def test_solution_part2():
+    intcode = read("src/day9/input.txt")
+    output = []
+    run({"program": intcode}, False, [2], lambda x: output.append(x))
+    assert len(output) == 1
+    solution = output[0]
+    assert solution == 82760
