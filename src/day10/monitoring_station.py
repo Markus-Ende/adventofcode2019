@@ -1,4 +1,4 @@
-from math import gcd
+from math import gcd, pi, atan2, degrees
 
 
 def parse_asteroid_map(input):
@@ -42,3 +42,37 @@ def find_best_station(asteroids):
         if (detectable_asteroids > best_station[1]):
             best_station = (a, detectable_asteroids)
     return best_station
+
+
+def sort_for_laser_round(asteroids, station):
+    def gradient_angle(a):
+        gradient_angle = degrees(atan2(a[1] - station[1], a[0] - station[0]))
+        asteroid_angle = (gradient_angle + 90) % 360
+        return asteroid_angle
+
+    def dist_to_station(a):
+        return sum(abs(x-y) for x, y in zip(a, station))
+
+    possible_targets = [(a, gradient_angle(a), dist_to_station(a))
+                        for a in asteroids if a != station]
+    possible_targets_sorted = sorted(
+        possible_targets, key=lambda x: (x[1], x[2]))
+
+    return [(a[0], a[1]) for a in possible_targets_sorted]
+
+
+def shoot(asteroids, station):
+    sorted_map = sort_for_laser_round(asteroids, station)
+    shot_asteroids = []
+    while (len(sorted_map) > 0):
+        last_shot_angle = -1
+        marked_indices_for_extinction = []
+        for i, a in enumerate(sorted_map):
+            if (a[1] != last_shot_angle):
+                shot_asteroids.append(a[0])
+                marked_indices_for_extinction.append(i)
+                last_shot_angle = a[1]
+        for i in reversed(marked_indices_for_extinction):
+            sorted_map.pop(i)
+
+    return shot_asteroids
