@@ -1,7 +1,7 @@
 import math
 
 
-def produce_fuel(reactions):
+def produce_fuel(reactions, initial_material=None, amount_of_fuel=1):
     ore_consumed = 0
 
     def produce_material_recursive(material_tuple, material):
@@ -37,11 +37,12 @@ def produce_fuel(reactions):
         material[name] -= amount
         return material
 
-    initial_materials = {target: 0 for target in reactions}
+    if (initial_material == None):
+        initial_material = {target: 0 for target in reactions}
     final_materials = produce_material_recursive(
-        ("FUEL", 1), initial_materials)
-    print("created fuel", final_materials)
-    return ore_consumed
+        ("FUEL", amount_of_fuel), initial_material)
+    # print("created fuel", final_materials)
+    return (ore_consumed, final_materials)
 
 
 def parse_reactions(input):
@@ -59,3 +60,22 @@ def parse_reactions(input):
             "input": [parse_material_spec(s) for s in r_in.split(", ")]
         }
     return reactions
+
+
+# TODO: find an efficient way to calculate this
+#       because this takes some hours to finish 😆️
+def check_fuel_production_with_trillion_ore(reactions):
+    fuel_produced = 0
+    totalore_consumed = 0
+
+    material = None
+    while(True):
+        (consumed_ore, material_rest) = produce_fuel(reactions, material)
+        if (totalore_consumed + consumed_ore > 1000000000000):
+            break
+        material = material_rest
+        totalore_consumed += consumed_ore
+        fuel_produced += 1
+        # print(fuel_produced)
+
+    return fuel_produced
