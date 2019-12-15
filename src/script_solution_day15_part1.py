@@ -1,10 +1,25 @@
 #!/usr/bin/env python3
 
+from sys import stdin
+import tty
+import termios
+
 from day15.input import intcode_input
-from day15.oxygen_system import *
+from day15.oxygen_system import coords_to_map, create_explorer
 
 explore = create_explorer(intcode_input)
 coords = []
+
+
+def input_single_char():
+    fileno = stdin.fileno()
+    stored_settings = termios.tcgetattr(fileno)
+    try:
+        tty.setraw(stdin.fileno())
+        char = stdin.read(1)
+    finally:
+        termios.tcsetattr(fileno, termios.TCSADRAIN, stored_settings)
+    return char
 
 
 def sanitized_input():
@@ -16,15 +31,24 @@ def sanitized_input():
         "d": "4"
     }
     while c == "invalid":
-        c = mapping.get(input(), "invalid")
+        pressed_key = input_single_char()
+        if (pressed_key == "t"):
+            print("exit.")
+            exit(0)
+        c = mapping.get(pressed_key, "invalid")
     return c
 
 
-while len(coords) == 0 or coords[len(coords)-1][2] != "x":
+print("Use 'w','s','a','d' to move.")
+print("Press 't' to exit.")
+while True:
     (coords, droid) = explore(sanitized_input)
     coords_with_droid = [(c[0], c[1], "D") if (
         (c[0], c[1]) == (droid[0], droid[1])) else c for c in coords]
+    print("__________________________________________\n")
     print(coords_to_map(coords_with_droid))
+    print("__________________________________________\n")
+    print("Press 't' to exit.\n")
 
  ### ### ####### ####### ##### ### #####
 #...#...#.......#.......#.....#...#.....#
@@ -47,7 +71,7 @@ while len(coords) == 0 or coords[len(coords)-1][2] != "x":
  ##.#.#.#############.#######.###.###.#.#
 #...#.#.........#.....#.#.....#...#...#.#
  ####.#########.#.#####.#.#####.###.####
-#...#...#.....#.#.#..O#.#...#.#...#.....#
+#...#...#.....#.#.#..s#.#...#.#...#.....#
 #.#.###.#.###.#.#.#.###.###.#.#.#######.#
 #.#.....#...#.....#.#.....#.#...#.....#.#
 #.#######.#######.#.#.###.#.#####.###.#.#
@@ -67,5 +91,3 @@ while len(coords) == 0 or coords[len(coords)-1][2] != "x":
 #.###.#.#######.#.###.###.#### ##### ##.#
 #...#.........#.....#...................#
  ### ######### ##### ###################
-
-# 298

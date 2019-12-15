@@ -1,6 +1,6 @@
 import pytest
-from day15.input import intcode_input
-from day15.oxygen_system import coords_to_map, create_explorer
+from day15.input import intcode_input, full_map
+from day15.oxygen_system import coords_to_map, create_explorer, oxygen_flooding
 
 
 @pytest.mark.parametrize("input,expected", [
@@ -25,8 +25,8 @@ def test_coords_to_map(input, expected):
 
 
 @pytest.mark.parametrize("input,expected", [
-    (intcode_input,
-     [])
+    (full_map,
+     346)
 ])
-def test_explore(input, expected):
-    assert create_explorer(input)() == expected
+def test_oxygen_flooding(input, expected):
+    assert oxygen_flooding(full_map) == expected
