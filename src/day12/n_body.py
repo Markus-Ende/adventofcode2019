@@ -1,4 +1,5 @@
 import re
+import json
 
 
 def parse_system(input):
@@ -11,27 +12,28 @@ def parse_system(input):
     return system
 
 
+def execute_single_simulation_step(system):
+    for i, moon in enumerate(system):
+        other_moons = [m for j, m in enumerate(system) if i != j]
+        gravity = {"x": 0, "y": 0, "z": 0}
+        for other_moon in other_moons:
+            for dim in "xyz":
+                if other_moon["pos"][dim] > moon["pos"][dim]:
+                    gravity[dim] += 1
+                elif other_moon["pos"][dim] < moon["pos"][dim]:
+                    gravity[dim] -= 1
+        for dim in "xyz":
+            moon["vel"][dim] += gravity[dim]
+    for moon in system:
+        for dim in "xyz":
+            moon["pos"][dim] += moon["vel"][dim]
+
+    return system
+
+
 def simulate_steps(system, steps=1):
-    def exectute_single_step(system):
-        for i, moon in enumerate(system):
-            other_moons = [m for j, m in enumerate(system) if i != j]
-            gravity = {"x": 0, "y": 0, "z": 0}
-            for other_moon in other_moons:
-                for dim in "xyz":
-                    if other_moon["pos"][dim] > moon["pos"][dim]:
-                        gravity[dim] += 1
-                    elif other_moon["pos"][dim] < moon["pos"][dim]:
-                        gravity[dim] -= 1
-            for dim in "xyz":
-                moon["vel"][dim] += gravity[dim]
-        for moon in system:
-            for dim in "xyz":
-                moon["pos"][dim] += moon["vel"][dim]
-
-        return system
-
     for _ in range(0, steps):
-        system = exectute_single_step(system)
+        system = execute_single_simulation_step(system)
     return system
 
 
@@ -45,3 +47,14 @@ def calculate_system_energy(system):
             kin += abs(moon["vel"][dim])
         energy += pot*kin
     return energy
+
+# TODO: find an efficient way to calculate this to finish task 2
+def calculate_steps_until_repetition(system):
+    system_deep_clone = json.loads(json.dumps(system))
+    print("clone", system_deep_clone)
+    steps_taken = 1
+    system = execute_single_simulation_step(system)
+    while(system != system_deep_clone):
+        system = execute_single_simulation_step(system)
+        steps_taken += 1
+    return steps_taken

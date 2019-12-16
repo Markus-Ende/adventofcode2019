@@ -1,5 +1,5 @@
 import pytest
-from .n_body import parse_system, simulate_steps, calculate_system_energy
+from .n_body import parse_system, simulate_steps, calculate_system_energy, calculate_steps_until_repetition
 from .input import input_system
 
 
@@ -51,3 +51,14 @@ def test_simulate_steps(input, steps, expected):
 ])
 def test_calculate_system_energy(input, expected):
     assert calculate_system_energy(input) == expected
+
+
+@pytest.mark.parametrize("input,expected", [
+    (parse_system("""<x=-1, y=0, z=2>
+        <x=2, y=-10, z=-7>
+        <x=4, y=-8, z=8>
+        <x=3, y=5, z=-1>"""), 2772),
+    # (parse_system(input_system), ?)
+])
+def test_calculate_steps_until_repetition(input, expected):
+    assert calculate_steps_until_repetition(input) == expected
