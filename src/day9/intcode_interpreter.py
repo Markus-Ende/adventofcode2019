@@ -1,4 +1,4 @@
-def run(initial_state, single_step=False, input_sequence=None, output_callback=None):
+def run(initial_state, single_step=False, input_sequence=None, output_callback=None, input_func=None):
     """
     start of inner functions
     """
@@ -54,7 +54,7 @@ def run(initial_state, single_step=False, input_sequence=None, output_callback=N
     def execute_input(i, tokenized_program):
         parameter_modes = parse_parameter_modes(tokenized_program[i])
         userinput = int(next(input_generator)
-                        if input_generator != None else input())
+                        if input_generator != None else input_func() if input_func != None else input())
         write_value(userinput, i+1, tokenized_program, parameter_modes[0])
         return i+2
 
