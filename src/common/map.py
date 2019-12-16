@@ -5,7 +5,7 @@ import sys
 # A coordinate must be specified as follows: (x, y, char)
 # Coordinates are relative to an arbitrary center at (0,0).
 # The map bounds will automatically be chosen to contain all coordinates.
-def coords_to_map(coords, default_char=" "):
+def coords_to_map(coords, default_char=" ", mapping={}):
     min_x = sys.maxsize
     min_y = sys.maxsize
     max_x = -sys.maxsize
@@ -17,7 +17,7 @@ def coords_to_map(coords, default_char=" "):
         min_y = min(min_y, c[1])
         max_x = max(max_x, c[0])
         max_y = max(max_y, c[1])
-        map_dict[(c[0], c[1])] = c[2]
+        map_dict[(c[0], c[1])] = mapping.get(c[2], c[2])
     for y in range(min_y, max_y+1):
         for x in range(min_x, max_x+1):
             # print("get", x, y)
