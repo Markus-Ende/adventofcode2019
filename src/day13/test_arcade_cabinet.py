@@ -46,11 +46,19 @@ def test_render_screen(input, expected):
     assert render_screen_breakout(input) == expected
 
 
-@pytest.mark.parametrize("input,expected", [
+@pytest.mark.parametrize("input,expected_amount_of_blocks", [
     (breakout, 180),
 ])
-def test_run_game(input, expected):
+def test_run_game_without_coin(input, expected_amount_of_blocks):
     last_screen = run_game_and_get_last_screen(input)
     amount_of_block_tiles = len([t for t in last_screen if t[2] == 2])
     print(render_screen_breakout(last_screen))
-    assert(amount_of_block_tiles) == expected
+    assert(amount_of_block_tiles) == expected_amount_of_blocks
+
+
+@pytest.mark.parametrize("input,expected_score", [
+    (breakout, 8777),
+])
+def test_run_game_with_coin(input, expected_score):
+    assert run_game(input, lambda _: None, lambda _: None,
+                    True, False) == expected_score
